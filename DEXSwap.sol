@@ -3,18 +3,18 @@ pragma solidity ^0.8.0;
 
 // ERC20
 interface IERC20 {
-    function totalSupply() external view returns (uint);
-    function balanceOf(address account) external view returns (uint);
-    function transfer(address recipient, uint amount) external returns (bool);
-    function allowance(address owner, address spender) external view returns (uint);
-    function approve(address spender, uint amount) external returns (bool);
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint amount
-    ) external returns (bool);
-    event Transfer(address indexed from, address indexed to, uint value);
-    event Approval(address indexed owner, address indexed spender, uint value);
+  function totalSupply() external view returns (uint);
+  function balanceOf(address account) external view returns (uint);
+  function transfer(address recipient, uint amount) external returns (bool);
+  function allowance(address owner, address spender) external view returns (uint);
+  function approve(address spender, uint amount) external returns (bool);
+  function transferFrom(
+      address sender,
+      address recipient,
+      uint amount
+  ) external returns (bool);
+  event Transfer(address indexed from, address indexed to, uint value);
+  event Approval(address indexed owner, address indexed spender, uint value);
 }
 
 interface IUniswapV2Router {
@@ -28,8 +28,29 @@ interface IUniswapV2Pair {
   function swap(uint256 amount0Out,	uint256 amount1Out,	address to,	bytes calldata data) external;
 }
 
+contract Ownable {
+  address private _owner;
+  
+  constructor() {
+    _owner = msg.sender;
+  }
+  
+  function owner() public view returns(address) {
+    return _owner;
+  }
+  
+  modifier onlyOwner() {
+    require(isOwner(),
+    "Function accessible only by the owner !!");
+    _;
+  }
+  
+  function isOwner() public view returns(bool) {
+    return msg.sender == _owner;
+  }
+}
 
-contract DEXSwap {
+contract DEXSwap is Ownable {
 
   int public x;
 }
