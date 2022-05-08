@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "hardhat/console.sol";
+
 // ERC20
 interface IERC20 {
   function totalSupply() external view returns (uint);
