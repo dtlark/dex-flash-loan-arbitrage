@@ -35,7 +35,7 @@ module.exports = {
       }
     },
     matic: {
-      url: "https://rpc-mumbai.maticvigil.com/v1/5840d98c98228ba27334b138bbc4f7f62ea8ba9e",
+      url: "https://rpc-mumbai.maticvigil.com/v1/{}",
       accounts: [process.env.PRIVATE_KEY]
     }
   },
