@@ -33,12 +33,10 @@ contract Ownable {
 
 contract Flash is Ownable {
 
-    uint timeout; // timeout for flashloan completion
-
-    //uniswap factory address
+    uint private timeout; // timeout for flashloan completion
     address public factory;
 
-    //create pointer to the sushiswapRouter
+    //pointer to sushiswapRouter
     IUniswapV2Router02 public sushiSwapRouter;
 
     constructor() public {
@@ -52,11 +50,10 @@ contract Flash is Ownable {
         return timeout;
     }
 
-
     function flashLoan(address token0, address token1, uint amount0, uint amount1) external {
         
         address pairAddress = IUniswapV2Factory(factory).getPair(token0, token1); 
-        // make sure the pair exists in uniswap 
+        // require pair exist in uniswap 
         require(pairAddress != address(0), "Pool not found on Uniswap!!!");
         IUniswapV2Pair(pairAddress).swap(amount0, amount1, address(this), bytes("1")); 
         //if data.length equals 0, the contract assumes that payment has already been received, and simply transfers the tokens to the to address. But, if data.length is greater than 0, the contract transfers the tokens and then calls uniswapV2Call
@@ -64,63 +61,29 @@ contract Flash is Ownable {
 
     function uniswapV2Call(address _sender, uint _amount0, uint _amount1, bytes calldata _data) external {
 
-        // the path is the array of addresses to capture pricing information 
         address[] memory path = new address[](2); 
-        
-        // get the amount of tokens that were borrowed in the flash loan amount 0 or amount 1 
-        // call it amountTokenBorrowed and will use later in the function 
         uint amountTokenBorrowed = _amount0 == 0 ? _amount1 : _amount0; 
 
-        // get the addresses of the two tokens from the uniswap liquidity pool 
         address token0 = IUniswapV2Pair(msg.sender).token0(); 
         address token1 = IUniswapV2Pair(msg.sender).token1(); 
 
-        // make sure the call to this function originated from
-        // one of the pair contracts in uniswap to prevent unauthorized behavior
-        require(msg.sender == UniswapV2Library.pairFor(factory, token0, token1), 'Invalid Request');
-
-        // make sure one of the amounts = 0 
+        require(msg.sender == UniswapV2Library.pairFor(factory, token0, token1), 'You are not the owner!!');
         require(_amount0 == 0 || _amount1 == 0);
 
-        // create and populate path array for sushiswap.  
-        // this defines what token we are buying or selling 
-        // if amount0 == 0 then we are going to sell token 1 and buy token 0 on sushiswap 
-        // if amount0 is not 0 then we are going to sell token 0 and buy token 1 on sushiswap 
         path[0] = _amount0 == 0 ? token1 : token0; 
         path[1] = _amount0 == 0 ? token0 : token1; 
-
-        // create a pointer to the token we are going to sell on sushiswap 
-        
  
         IERC20 token = IERC20(_amount0 == 0 ? token1 : token0);
-        
-        // approve the sushiSwapRouter to spend our tokens so the trade can occur             
+              
         token.approve(address(sushiSwapRouter), amountTokenBorrowed);
 
-        // calculate the amount of tokens we need to reimburse uniswap for the flashloan 
         uint amountRequired = UniswapV2Library.getAmountsIn(factory, amountTokenBorrowed, path)[0]; 
-        
-        // finally sell the token we borrowed from uniswap on sushiswap 
-        // amountTokenBorrowed is the amount to sell 
-        // amountRequired is the minimum amount of token to receive in exchange required to payback the flash loan 
-        // path what we are selling or buying 
-        // msg.sender address to receive the tokens 
-        // deadline is the order time limit 
-        // if the amount received does not cover the flash loan the entire transaction is reverted 
         uint amountReceived = sushiSwapRouter.swapExactTokensForTokens( amountTokenBorrowed, amountRequired, path, msg.sender, timeout)[1]; 
 
-        // pointer to output token from sushiswap 
         IERC20 outputToken = IERC20(_amount0 == 0 ? token0 : token1);
-        
-        // amount to payback flashloan 
-        // amountRequired is the amount we need to payback 
-        // uniswap can accept any token as payment
         outputToken.transfer(msg.sender, amountRequired);   
 
-        // send profit (remaining tokens) back to the address that initiated the transaction 
         outputToken.transfer(tx.origin, amountReceived - amountRequired);  
-        
     }
-
 
 }

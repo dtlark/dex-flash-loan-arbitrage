@@ -5,8 +5,6 @@ require("@nomiclabs/hardhat-waffle");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
@@ -14,9 +12,6 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
     console.log(account.address);
   }
 });
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -38,6 +33,10 @@ module.exports = {
       forking: {
         url: process.env.INFURA_URL
       }
+    },
+    matic: {
+      url: "https://rpc-mumbai.maticvigil.com/v1/5840d98c98228ba27334b138bbc4f7f62ea8ba9e",
+      accounts: [process.env.PRIVATE_KEY]
     }
   },
   gasReporter: {
