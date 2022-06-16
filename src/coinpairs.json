@@ -1,0 +1,71 @@
+{
+    "network": "polygon",
+    "routers": {
+        "uniswapV2r02": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        "pancakeswap" : "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+        "sushiswap" : "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+        "quickswap" : "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"
+    }
+    ,
+    "networks": {
+        "polygon": [
+                {
+                "address": "0x45dda9cb7c25131df268515131f647d726f50608",
+                "token0": "USDC",
+                "token1": "WETH"
+                },
+                {
+                "address": "0x7f567ce133b0b69458fc318af06eee27642865be",
+                "token0": "USDC",
+                "token1": "miMATIC"
+                },
+                {
+                "address": "0x50eaedb835021e4a108b7290636d62e9765cc6d7",
+                "token0": "WBTC",
+                "token1": "WETH"
+                },
+                {
+                "address": "0x86f1d8390222a3691c28938ec7404a1661e618e0",
+                "token0": "MATIC",
+                "token1": "WETH"
+                },
+                {
+                "address": "0xa374094527e1673a86de625aa59517c5de346d32",
+                "token0": "MATIC",
+                "token1": "USDC"
+                },
+                {
+                "address": "0xdac8a8e6dbf8c690ec6815e0ff03491b2770255d",
+                "token0": "USDC",
+                "token1": "USDT"
+                },
+                {
+                "address": "0xf7abb7dee889da4300a82c26f8c0c725c64bd493",
+                "token0": "USDC",
+                "token1": "XMT"
+                },
+                {
+                "address": "0x167384319b41f7094e62f7506409eb38079abff8",
+                "token0": "MATIC",
+                "token1": "WETH"
+                },
+                {
+                "address": "0x5645dcb64c059aa11212707fbf4e7f984440a8cf",
+                "token0": "USDC",
+                "token1": "DAI"
+                },
+                {
+                "address": "0x0e44ceb592acfc5d3f09d996302eb4c499ff8c10",
+                "token0": "USDC",
+                "token1": "WETH"
+                }
+            ],
+        "mainnet": [
+            {
+            "address": "0x5777d92f208679db4b9778590fa3cab3ac9e2168",
+            "token0": "DAI",
+            "token1": "USDC"
+            }
+        ]
+    }
+}
