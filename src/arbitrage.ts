@@ -27,12 +27,18 @@ async function main() {
       prices.push();
     }
 
-    //find min and max //tournament method
+    // find min and max of token pair prices
+    var min = Math.min.apply(null, prices);
+    var max = Math.max.apply(null, prices);
 
-    // if max - min - liquidity fees - gas price > threshold
+    let threshold : number = 10.0;
+    let gas : number = 0.0;
+    let liquidity : number = 0.0;
 
+    if (max - min - liquidity - gas > threshold) {
       //borrow tokens from min price and sell to max
       //const swap = await contract.doSwap(token0, token1, amount0, uamount1, _pairAddress);
+    }
   }
 }
 
